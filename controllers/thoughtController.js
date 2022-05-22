@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Thought } = require("../models/Thought");
+const Thought = require("../models/Thought");
 
 module.exports = {
 // get all thoughts

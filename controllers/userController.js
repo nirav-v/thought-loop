@@ -1,5 +1,7 @@
+const mongoose = require("mongoose");
 // import the User and Thought models
-const { User } = require('../models/User');
+const User = require('../models/User');
+const Thought = require('../models/Thought')
 
 module.exports = {
 // get all users
