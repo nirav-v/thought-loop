@@ -21,4 +21,7 @@ const thoughtSchema = new Schema({
   reactions: [reactionSchema],
 });
 
+// initialize and export the thought model
 const Thought = model('thought', thoughtSchema)
+
+module.exports = Thought;
