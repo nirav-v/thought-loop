@@ -59,5 +59,9 @@ deleteUser(req, res) {
       .catch((err) => res.status(500).json(err));
   },
 
+  // add another user's _id to the users friend array
+
+  // remove another user's _id from the users friend array
+
 // end of module.exports
 };

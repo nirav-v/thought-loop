@@ -76,5 +76,9 @@ getThoughts(req, res) {
       .catch((err) => res.status(500).json(err));
   },
 
+  // create a new reaction and add it to a specific thoughts reactions array
+
+  // remove a reaction by reactionId 
+
   // end of module.exports
 }
