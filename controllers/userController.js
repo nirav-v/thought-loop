@@ -6,7 +6,6 @@ module.exports = {
 // get all users
 getUsers(req, res) {
     User.find()
-    .populate('thoughts')
     .then((users) => res.json(users))
       .catch((err) => res.status(500).json(err));
   },
@@ -14,6 +13,7 @@ getUsers(req, res) {
 // get single user by _id, populate the friends and thoughts data
   getSingleUser (req, res) {
     User.findOne({ _id: req.params.userId })
+      .populate('thoughts')
       .select('-__v')
       .then((user) =>
         !user
