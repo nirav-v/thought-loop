@@ -14,7 +14,7 @@ module.exports = {
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.userId })
       // .select("-__v")
-      .populate("thoughts")
+      .populate("thoughts friends")
       ////how to get friends data to populate too?
       // .populate("friends")
       // .exec()
@@ -57,14 +57,17 @@ module.exports = {
 
   // delete a user
   deleteUser(req, res) {
-    User.findOneAndDelete({ _id: req.params.userId })
-      .then((user) =>
-        !user
+    User.findOneAndDelete({ _id: req.params.userId  })
+      .then((user) => 
+          !user
           ? res.status(404).json({ message: "No user with that ID" })
-          : Thought.deleteMany({ _id: { $in: user.thoughts } })
+          : Thought.deleteMany({ _id: { $in: user.thoughts } }).then(() => res.json({ message: "user and thoughts deleted!" }))
       )
-      .then(() => res.json({ message: "user and thoughts deleted!" }))
-      .catch((err) => res.status(500).json(err));
+      .catch((err) => {
+        res.status(500).json(err)
+        console.log(err)
+      });
+      
   },
 
   // add another user's _id to the users friend array
