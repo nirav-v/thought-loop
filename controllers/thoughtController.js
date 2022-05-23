@@ -106,15 +106,15 @@ module.exports = {
       // req params provides _id of the thought to remove a reaction from
       { _id: req.params.thoughtId },
       // $pull will remove specific reaction by _id from thought's reactions array
-      { $pull: { reactions: req.body.reactionId} },
+      { $pull: { reactions: {reactionId: mongoose.Types.ObjectId(req.body.reactionId) } } },
       // validate the req body using the Reaction schema validators
       { runValidators: true, new: true }
     )
       .then((thought) =>
-        !thought.reactions.reactionId
+        !thought
           ? res
               .status(404)
-              .json({ message: "No reaction with that reactionId" })
+              .json({ message: "No thought with that thoughtId" })
           : res.json(thought)
       )
       .catch((err) => {
