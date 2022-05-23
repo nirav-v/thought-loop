@@ -24,10 +24,7 @@ getThoughts(req, res) {
       .then(async (thought) =>
         !thought
           ? res.status(404).json({ message: "No thought with that ID" })
-          : res.json({
-              thought,
-              grade: await grade(req.params.thoughtId),
-            })
+          : res.json(thought)
       )
       .catch((err) => {
         console.log(err);
@@ -41,8 +38,11 @@ getThoughts(req, res) {
       .then((thought) => {
         // add the thought _id to the associated user's thoughts array
         return User.findOneAndUpdate(
+          // should provide a user id for a user the thought belongs to when creating a new thought. Pushes the thought id to that user's thoughts array.
           { _id: req.body.userId },
+          // $addToSet same as $push but does not allow duplicate values in the array
           { $addToSet: { thoughts: thought._id } },
+          // return user after their thoughts are updated
           { new: true }
         );
       })
@@ -80,15 +80,27 @@ getThoughts(req, res) {
       .then((thought) =>
         !thought
           ? res.status(404).json({ message: 'No thought with that ID' })
-          : Student.deleteMany({ _id: { $in: thought.students } })
-      )
-      .then(() => res.json({ message: 'Thought and students deleted!' }))
+          : res.json({ message: 'Thought deleted!' }))
       .catch((err) => res.status(500).json(err));
   },
 
   // create a new reaction and add it to a specific thoughts reactions array
+  addReaction(req, res){
+    Thought.findOneAndUpdate(
+      // req params provides thoughtId property to add the new reaction
+      {_id: req.params.thoughtId},
+      {$addToSet: {reactions: req.body}},
+      // validate the req body using the Reaction schema validators
+      {runValidators: true, new: true}
+    )
+    .then((thought) => 
+      !thought ? res.status(404).json({message: 'No thought with that thoughtId'}) : res.json(thought)
+    )
+    .catch((err) => res.status(500).json(err));
+  }
 
   // remove a reaction by reactionId 
+
 
   // end of module.exports
 }
