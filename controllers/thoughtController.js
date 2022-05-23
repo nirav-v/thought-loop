@@ -103,7 +103,7 @@ module.exports = {
   // remove a reaction by reactionId
   deleteReaction(req, res) {
     Thought.findOneAndUpdate(
-      // req params provides thoughtId property to add the new reaction
+      // req params provides _id of the thought to remove a reaction from
       { _id: req.params.thoughtId },
       // $pull will remove specific reaction by _id from thought's reactions array
       { $pull: { reactions: req.body.reactionId} },
@@ -111,11 +111,11 @@ module.exports = {
       { runValidators: true, new: true }
     )
       .then((thought) =>
-        !thought.reactionId
+        !thought.reactions.reactionId
           ? res
               .status(404)
               .json({ message: "No reaction with that reactionId" })
-          : res.json(thought.reactions)
+          : res.json(thought)
       )
       .catch((err) => {
         console.log(err);
