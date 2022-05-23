@@ -77,9 +77,7 @@ getThoughts(req, res) {
       .then((thought) =>
         !thought
           ? res.status(404).json({ message: 'No thought with that ID' })
-          : Student.deleteMany({ _id: { $in: thought.students } })
-      )
-      .then(() => res.json({ message: 'Thought and students deleted!' }))
+          : res.json({ message: 'Thought deleted!' }))
       .catch((err) => res.status(500).json(err));
   },
 
