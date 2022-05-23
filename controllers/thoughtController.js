@@ -109,18 +109,21 @@ module.exports = {
       // req params provides thoughtId property to add the new reaction
       { _id: req.params.thoughtId },
       // $pull will remove specific reaction by _id from thought's reactions array
-      { $pull: { reactions: { reactions: req.body.reactionId } } },
+      { $pull: { reactions: req.body.reactionId} },
       // validate the req body using the Reaction schema validators
       { runValidators: true, new: true }
     )
       .then((thought) =>
-        !thought
+        !thought.reactionId
           ? res
               .status(404)
               .json({ message: "No reaction with that reactionId" })
-          : res.json(thought)
+          : res.json(thought.reactions)
       )
-      .catch((err) => res.status(500).json(err));
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err)
+      });
   },
 
   // end of module.exports
