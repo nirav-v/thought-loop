@@ -1,20 +1,19 @@
 const mongoose = require("mongoose");
 // import the User and Thought models
-// const User = require('../models/User');
-// const Thought = require('../models/Thought')
 const {User, Thought} = require('../models')
 
 module.exports = {
 // get all users
 getUsers(req, res) {
     User.find()
-      .then((users) => res.json(users))
+    .then((users) => res.json(users))
       .catch((err) => res.status(500).json(err));
   },
 
 // get single user by _id, populate the friends and thoughts data
   getSingleUser (req, res) {
     User.findOne({ _id: req.params.userId })
+      .populate('thoughts')
       .select('-__v')
       .then((user) =>
         !user
@@ -63,7 +62,9 @@ deleteUser(req, res) {
   },
 
   // add another user's _id to the users friend array
-
+addFriend(req, res){
+  User.findOneAndUpdate({_id: req.params.userId})
+}
   // remove another user's _id from the users friend array
 
 // end of module.exports
