@@ -24,10 +24,7 @@ getThoughts(req, res) {
       .then(async (thought) =>
         !thought
           ? res.status(404).json({ message: "No thought with that ID" })
-          : res.json({
-              thought,
-              grade: await grade(req.params.thoughtId),
-            })
+          : res.json(thought)
       )
       .catch((err) => {
         console.log(err);
