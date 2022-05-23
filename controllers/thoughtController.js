@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Thought = require("../models/Thought");
+const {User, Thought} = require('../models')
 
 module.exports = {
 // get all thoughts
@@ -46,7 +46,17 @@ getThoughts(req, res) {
           { new: true }
         );
       })
-      .catch((err) => res.status(500).json(err));
+      .then((user) =>
+        !user
+          ? res.status(404).json({
+              message: 'Thought created, but found no user with that ID',
+            })
+          : res.json('created thought')
+      )
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
   },
 
   //update a thought by its _id

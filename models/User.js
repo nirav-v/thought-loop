@@ -20,7 +20,7 @@ const userSchema = new Schema(
     thoughts: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Thought",
+        ref: "thought",
       },
     ],
     // a user can have many thoughts and many friends, stored as arrays of object ids for each instance of the model being referenced
