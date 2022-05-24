@@ -77,10 +77,10 @@ module.exports = {
       { $addToSet: { friends: req.params.friendId } },
       { runValidators: true, new: true }
     )
-      .then((application) =>
-        !application
-          ? res.status(404).json({ message: "No application with this id!" })
-          : res.json(application)
+      .then((user) =>
+        !user
+          ? res.status(404).json({ message: "No user with this id!" })
+          : res.json(user)
       )
   },
   // remove another user's _id from the users friend array
@@ -90,10 +90,10 @@ module.exports = {
       { $pull: { friends: req.params.friendId } },
       { runValidators: true, new: true }
     )
-      .then((application) =>
-        !application
-          ? res.status(404).json({ message: "No application with this id!" })
-          : res.json(application)
+      .then((user) =>
+        !user
+          ? res.status(404).json({ message: "No user with this id!" })
+          : res.json(user)
       )
   },
 
