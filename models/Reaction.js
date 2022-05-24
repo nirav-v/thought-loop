@@ -1,6 +1,7 @@
 const { Schema, Types} = require("mongoose");
-
-const reactionSchema = new Schema({
+const {formatTime} = require('../utils/formatTime')
+const reactionSchema = new Schema(
+  {
   reactionId: {
     type: Schema.Types.ObjectId,
     default: () => new Types.ObjectId(),
@@ -18,7 +19,15 @@ const reactionSchema = new Schema({
     type: Date,
     default: Date.now(),
     // TODO Use a getter method to format the timestamp on query
+    get: formatTime
+  },
+},
+  {
+    toJSON: {
+      getters: true,
+    },
+    id: false,
   }
-});
+);
 
 module.exports = reactionSchema;
